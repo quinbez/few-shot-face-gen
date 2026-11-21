@@ -18,6 +18,7 @@ LEARNING_RATE = 1e-4
 TRAIN_STEPS = 5                 # tiny, just to test the loop on CPU
 SEED = 42
 FACE_SIM_THRESHOLD = 0.35   # ArcFace cosine: above this ≈ same person
+AUGMENT = False   # set True only for the augmentation run
 
 def get_device():
     if torch.cuda.is_available():

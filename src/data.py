@@ -17,12 +17,20 @@ class FaceDataset(Dataset):
             raise FileNotFoundError(f"No .png images in {image_dir}")
 
         self.prompt = config.INSTANCE_PROMPT
-        self.transform = transforms.Compose([
-            transforms.Resize(size),
-            transforms.CenterCrop(size),
-            transforms.ToTensor(),                 # -> [0,1]
-            transforms.Normalize([0.5], [0.5]),    # -> [-1,1], what the VAE expects
-        ])
+        tfms = [
+            transforms.Resize(config.IMAGE_SIZE),
+            transforms.CenterCrop(config.IMAGE_SIZE),
+        ]
+        if getattr(config, "AUGMENT", False):
+            tfms += [
+                transforms.RandomHorizontalFlip(p=0.5),
+                transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.15, hue=0.0),
+            ]
+        tfms += [
+            transforms.ToTensor(),
+            transforms.Normalize([0.5], [0.5]),
+        ]
+        self.transform = transforms.Compose(tfms)
 
     def __len__(self):
         return len(self.paths)
