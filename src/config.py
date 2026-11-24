@@ -20,6 +20,11 @@ SEED = 42
 FACE_SIM_THRESHOLD = 0.35   # ArcFace cosine: above this ≈ same person
 AUGMENT = False   # set True only for the augmentation run
 
+PRIOR_PRESERVATION = False
+CLASS_DIR = TRAIN_DIR.parent / "class"
+CLASS_PROMPT = f"a photo of a {CLASS_WORD}"
+PRIOR_LOSS_WEIGHT = 1.0
+
 def get_device():
     if torch.cuda.is_available():
         return "cuda"
